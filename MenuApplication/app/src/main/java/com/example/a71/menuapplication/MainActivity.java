@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.a71.menuapplication.Adapters.ImageAdapter;
@@ -46,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         gridView = (GridView)findViewById(R.id.gridview);
         gridView.setAdapter(new ImageAdapter(this));
         //registerForContextMenu(gridView);
+
 
     }
 

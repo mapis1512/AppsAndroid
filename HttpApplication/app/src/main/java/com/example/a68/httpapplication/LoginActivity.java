@@ -1,5 +1,4 @@
-package com.example.a71.httpapplication;
-
+package com.example.a68.httpapplication;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -31,8 +30,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-
-import com.example.a71.httpapplication.utilities.MyPreferences;
+import com.example.a68.httpapplication.utilities.MyPreferences;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -217,7 +215,7 @@ public class LoginActivity extends AppCompatActivity {
                 return false;
             }
             if (mEmail.equals("pepito") && mPassword.equals("123456"))
-                // TODO: register the new account here.
+            // TODO: register the new account here.
                 return true;
 
             return false;
@@ -249,5 +247,4 @@ public class LoginActivity extends AppCompatActivity {
         finish();
     }
 }
-
 

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">HttpApplication</string>
+    <string name="app_name">datos</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -14,4 +14,6 @@
         completions."
     </string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="summary_text">Esta es una notificacion de texto expandible</string>
 </resources>
