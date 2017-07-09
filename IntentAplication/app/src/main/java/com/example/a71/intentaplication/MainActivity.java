@@ -1,9 +1,13 @@
 package com.example.a71.intentaplication;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -19,6 +23,8 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener{
 
+    private ArrayList<Person> dataset;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,9 +32,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ListView listPerson=(ListView)findViewById(R.id.listView);
-        ArrayList<Person> dataset=Person.getDataSet();
+        dataset = Person.getDataSet();
         ArrayList<String> datasetString=new ArrayList<String>();
-        for(int i=0;i<dataset.size();i++){
+        for(int i = 0; i< dataset.size(); i++){
             datasetString.add(dataset.get(i).getNombre());
         }
         ArrayAdapter<String> adapter=new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,datasetString);
@@ -69,6 +75,19 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Intent newActivity=new Intent(MainActivity.this,PersonDetailActivity.class);
-        startActivity(newActivity);
+        newActivity.putExtra("person",dataset.get(position));
+        startActivityForResult(newActivity,0);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode==PersonDetailActivity.WEB){
+            Bundle extraDate=data.getExtras();
+            String web=extraDate.getString("web");
+            Uri call = Uri.parse("http://" + web);
+            Intent newIntent = new Intent(Intent.ACTION_VIEW, call);
+            startActivity(newIntent);
+        }
     }
 }
