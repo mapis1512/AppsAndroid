@@ -17,15 +17,21 @@ import com.example.a71.recyclerlistapp.R;
  */
 
 public class ListaFragment extends Fragment {
+    private OnItemListener listener;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.lista_fragment, container, false);
         RecyclerView recyclerview = (RecyclerView) view.findViewById(R.id.recycler);
         String[] dataset={"Lollipop","Honeycumb","Kitkat","Icecream","masshmallow"};
-        CustomRecyclerAdapter customRecyclerAdapter=new CustomRecyclerAdapter(dataset);
+        CustomRecyclerAdapter customRecyclerAdapter=new CustomRecyclerAdapter(dataset,listener);
         recyclerview.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerview.setAdapter(customRecyclerAdapter);
         return view;
+    }
+
+   public interface OnItemListener{
+        void onClick(String item);
     }
 }

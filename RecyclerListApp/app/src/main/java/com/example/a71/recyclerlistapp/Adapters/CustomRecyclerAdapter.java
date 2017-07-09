@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.a71.recyclerlistapp.Fragments.ListaFragment;
 import com.example.a71.recyclerlistapp.R;
 
 /**
@@ -14,6 +15,7 @@ import com.example.a71.recyclerlistapp.R;
 
 public class CustomRecyclerAdapter extends RecyclerView.Adapter<CustomRecyclerAdapter.ViewHolder> {
     private String[] mDataset;
+    private ListaFragment.OnItemListener listener;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -30,8 +32,9 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter<CustomRecyclerAd
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public CustomRecyclerAdapter(String[] myDataset) {
+    public CustomRecyclerAdapter(String[] myDataset, ListaFragment.OnItemListener listener) {
         mDataset = myDataset;
+        this.listener=listener;
     }
 
     // Create new views (invoked by the layout manager)
@@ -49,14 +52,16 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter<CustomRecyclerAd
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         holder.mTextView.setText(mDataset[position]);
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                
+                if(listener!=null){
+                    listener.onClick(mDataset[position]);
+                }
             }
         });
     }
