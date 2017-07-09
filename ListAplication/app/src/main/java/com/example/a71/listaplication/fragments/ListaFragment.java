@@ -1,12 +1,18 @@
 package com.example.a71.listaplication.fragments;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import com.example.a71.listaplication.R;
@@ -74,15 +80,62 @@ public class ListaFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view=inflater.inflate(R.layout.fragment_lista, container, false);
+        final ArrayList<Persona>personas=new ArrayList<>();
+        final CustomAdapter customer=new CustomAdapter(getActivity(),personas);
+        final View view=inflater.inflate(R.layout.fragment_lista, container, false);
         ListView listView=(ListView)view.findViewById(R.id.lista);
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View viewOnClik) {
+                if(personas!=null && customer!=null){
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    LayoutInflater inflater = getActivity().getLayoutInflater();
+                    final View dialoglayout = inflater.inflate(R.layout.dialog, null);
+                    builder.setTitle("Nuevo item");
+                    builder.setView(dialoglayout);
+                    builder.setCancelable(true);
+                    builder.setPositiveButton("Agregar", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            int edad=Integer.parseInt(((EditText)dialoglayout.findViewById(R.id.editText3)).getText().toString());
+                            personas.add(new Persona(((EditText)dialoglayout.findViewById(R.id.editText)).getText().toString(),((EditText)dialoglayout.findViewById(R.id.editText)).getText().toString(),edad));
+                            customer.notifyDataSetChanged();
+                            Snackbar.make(view, "Se agrego nuevo item", Snackbar.LENGTH_LONG)
+                                    .setAction("Action", null).show();
+                        }
+                    });
+                    builder.show();
+                    builder.create();
+                }
+            }
+        });
 
-        ArrayList<Persona>personas=new ArrayList<>();
         personas.add(new Persona("Maria Paula","Gomez pireto",24));
         personas.add(new Persona("alex","Gomez ",22));
 
-        CustomAdapter customer=new CustomAdapter(getActivity(),personas);
+
         listView.setAdapter(customer);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
+                final int position=i;
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                LayoutInflater inflater = getActivity().getLayoutInflater();
+                builder.setTitle("Confirmación");
+                builder.setMessage(" Seguro desea eliminar este dato?");
+                builder.setPositiveButton("SI", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        personas.remove(position);
+                        customer.notifyDataSetChanged();
+                    }
+                });
+                builder.show();
+                builder.create();
+            }
+        });
 
         return view;
     }
