@@ -23,6 +23,7 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter<CustomRecyclerAd
         public TextView mTextView;
         public ViewHolder(View v) {
             super(v);
+            mTextView=(TextView)v.findViewById(R.id.text_desc);
         }
     }
 

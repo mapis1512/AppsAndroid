@@ -3,11 +3,15 @@ package com.example.a71.recyclerlistapp;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.example.a71.recyclerlistapp.Fragments.ListaFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,6 +30,14 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+        replaceFragmnet(new ListaFragment());
+    }
+
+    private void replaceFragmnet(ListaFragment listaFragment) {
+        FragmentManager fragment=getSupportFragmentManager();
+        FragmentTransaction fragmnetrans=fragment.beginTransaction();
+        fragmnetrans.replace(R.id.container,listaFragment);
+        fragmnetrans.commit();
     }
 
     @Override
