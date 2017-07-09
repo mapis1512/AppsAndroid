@@ -21,9 +21,11 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter<CustomRecyclerAd
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         public TextView mTextView;
+        public  View view;
         public ViewHolder(View v) {
             super(v);
             mTextView=(TextView)v.findViewById(R.id.text_desc);
+            view=v;
         }
     }
 
@@ -51,7 +53,12 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter<CustomRecyclerAd
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         holder.mTextView.setText(mDataset[position]);
-
+        holder.view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                
+            }
+        });
     }
 
     // Return the size of your dataset (invoked by the layout manager)
