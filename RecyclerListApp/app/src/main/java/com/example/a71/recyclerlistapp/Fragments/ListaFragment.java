@@ -1,5 +1,6 @@
 package com.example.a71.recyclerlistapp.Fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -33,5 +34,17 @@ public class ListaFragment extends Fragment {
 
    public interface OnItemListener{
         void onClick(String item);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        listener=(OnItemListener)context;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        listener=null;
     }
 }
