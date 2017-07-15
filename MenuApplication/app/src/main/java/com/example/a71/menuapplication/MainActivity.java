@@ -45,7 +45,8 @@ public class MainActivity extends AppCompatActivity {
         });
         gridView = (GridView)findViewById(R.id.gridview);
         gridView.setAdapter(new ImageAdapter(this));
-        registerForContextMenu(gridView);
+        //registerForContextMenu(gridView);
+
     }
 
     @Override
