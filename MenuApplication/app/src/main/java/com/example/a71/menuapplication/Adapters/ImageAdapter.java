@@ -46,14 +46,14 @@ import java.util.ArrayList;
         imageView.setImageResource(imagenes.get(position));
         imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         imageView.setLayoutParams(new GridView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,400));
-        imageView.setOnClickListener(new View.OnClickListener() {
+       /* imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent newActivity=new Intent(context,Image.class);
+                Intent newActivity=new Intent(context,ImageAct.class);
                 newActivity.putExtra("id",imagenes.get(pos));
                 context.startActivity(newActivity);
             }
-        });
+        });*/
         return imageView;
     }
 
@@ -64,11 +64,11 @@ import java.util.ArrayList;
 
     @Override
     public Object getItem(int position) {
-        return position;
+        return imagenes.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return imagenes.get(position);
+        return position;
     }
 }
