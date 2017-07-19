@@ -54,6 +54,7 @@ import java.util.ArrayList;
                 context.startActivity(newActivity);
             }
         });*/
+
         return imageView;
     }
 

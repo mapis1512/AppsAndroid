@@ -1,12 +1,11 @@
 package com.example.a71.httpapplication;
 
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.preference.Preference;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -32,6 +31,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+
 import com.example.a71.httpapplication.utilities.MyPreferences;
 
 import java.util.ArrayList;
@@ -42,7 +42,8 @@ import static android.Manifest.permission.READ_CONTACTS;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity  {
+public class LoginActivity extends AppCompatActivity {
+
 
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
@@ -54,7 +55,7 @@ public class LoginActivity extends AppCompatActivity  {
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
-    private MyPreferences preference;
+    private MyPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,8 +64,9 @@ public class LoginActivity extends AppCompatActivity  {
         // Set up the login form.
         mEmailView = (EditText) findViewById(R.id.email);
 
+
         mPasswordView = (EditText) findViewById(R.id.password);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        /*mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 if (id == R.id.login || id == EditorInfo.IME_NULL) {
@@ -73,7 +75,7 @@ public class LoginActivity extends AppCompatActivity  {
                 }
                 return false;
             }
-        });
+        });*/
 
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
@@ -85,8 +87,9 @@ public class LoginActivity extends AppCompatActivity  {
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
-        preference = new MyPreferences(this);
-        if(!preference.getUsername().isEmpty()){
+
+        preferences = new MyPreferences(this);
+        if (!preferences.getUsername().isEmpty()){
             goMainActivity();
         }
     }
@@ -112,23 +115,25 @@ public class LoginActivity extends AppCompatActivity  {
         boolean cancel = false;
         View focusView = null;
 
-        // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
-            cancel = true;
-        }
 
         // Check for a valid email address.
         if (TextUtils.isEmpty(email)) {
             mEmailView.setError(getString(R.string.error_field_required));
             focusView = mEmailView;
             cancel = true;
-        }/* else if (!isEmailValid(email)) {
-            mEmailView.setError(getString(R.string.error_invalid_email));
-            focusView = mEmailView;
+        }
+        else if (TextUtils.isEmpty(password)) {
+            mPasswordView.setError(getString(R.string.error_field_required));
+            focusView = mPasswordView;
             cancel = true;
-        }*/
+        }
+        // Check for a valid password, if the user entered one.
+        else if(!isPasswordValid(password)) {
+            mPasswordView.setError(getString(R.string.error_invalid_password));
+            focusView = mPasswordView;
+            cancel = true;
+        }
+
 
         if (cancel) {
             // There was an error; don't attempt login and focus the first
@@ -139,7 +144,7 @@ public class LoginActivity extends AppCompatActivity  {
             // perform the user login attempt.
             showProgress(true);
             mAuthTask = new UserLoginTask();
-            mAuthTask.execute(email,password);
+            mAuthTask.execute(email, password);
         }
     }
 
@@ -189,29 +194,32 @@ public class LoginActivity extends AppCompatActivity  {
         }
     }
 
-    private void goMainActivity(){
-        startActivity(new Intent(LoginActivity.this,MainActivity.class));
-        finish();
-    }
+
     /**
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
     public class UserLoginTask extends AsyncTask<String, Void, Boolean> {
 
-        private  String mEmail;
-        private  String mPassword;
-        
+        private String mEmail;
+        private String mPassword;
+
         @Override
         protected Boolean doInBackground(String... params) {
             // TODO: attempt authentication against a network service.
-            mEmail = params[0];
-            mPassword=params[1];
-            if(mEmail.equals("pepito")&& mPassword.equals("123456")){
-                return true;
-            }
 
-             // TODO: register the new account here.
+            mEmail = params[0];
+            mPassword = params[1];
+            try {
+                // Simulate network access.
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                return false;
+            }
+            if (mEmail.equals("pepito") && mPassword.equals("123456"))
+                // TODO: register the new account here.
+                return true;
+
             return false;
         }
 
@@ -221,7 +229,7 @@ public class LoginActivity extends AppCompatActivity  {
             showProgress(false);
 
             if (success) {
-                preference.setUsername(mEmail);
+                preferences.setUsername(mEmail);
                 goMainActivity();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
@@ -236,5 +244,10 @@ public class LoginActivity extends AppCompatActivity  {
         }
     }
 
+    private void goMainActivity() {
+        startActivity(new Intent(this, MainActivity.class));
+        finish();
+    }
 }
+
 
