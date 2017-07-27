@@ -44,18 +44,17 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+
             }
         });
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -66,6 +65,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent intent=new Intent();
+            intent.setAction("android.example.action.MYACTIVITY");
+            intent.addCategory("android.intent.category.DEFAULT");
+            startActivity(intent);
             return true;
         }
 
