@@ -30,6 +30,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 
+import static com.example.a68.httpapplication.databases.MyDataBase.COLUMN_CELULAR;
+import static com.example.a68.httpapplication.databases.MyDataBase.COLUMN_CIUDAD;
+import static com.example.a68.httpapplication.databases.MyDataBase.COLUMN_DIRECCION;
+import static com.example.a68.httpapplication.databases.MyDataBase.COLUMN_HORARIOS;
+import static com.example.a68.httpapplication.databases.MyDataBase.COLUMN_ID_MODEL;
+import static com.example.a68.httpapplication.databases.MyDataBase.COLUMN_LAT;
+import static com.example.a68.httpapplication.databases.MyDataBase.COLUMN_LON;
+import static com.example.a68.httpapplication.databases.MyDataBase.COLUMN_NAME;
+import static com.example.a68.httpapplication.databases.MyDataBase.COLUMN_PAIS;
 import static com.example.a68.httpapplication.utilities.Uris.BULK_INSERT_URI;
 import static com.example.a68.httpapplication.utilities.Uris.GET_ALL_URI;
 
@@ -77,7 +86,7 @@ public class PlaceFragment extends Fragment {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
         //cursor = dataBase.getAll();
-        cursor=getActivity().getContentResolver().query(GET_ALL_URI,null,null,null,null);
+        cursor = getActivity().getContentResolver().query(GET_ALL_URI, null, null, null, null);
         if (cursor == null || !cursor.moveToFirst())
             ((MainActivity) getActivity()).request();
         //else
@@ -123,51 +132,82 @@ public class PlaceFragment extends Fragment {
     }
 
     public void updateList(JSONArray response) {
-//        Gson gson = new Gson();
-//
-        Date currentLocalTime = new Date();
-//        places = gson.fromJson(response.toString(),
-//                new TypeToken<ArrayList<Place>>(){}.getType());
+        Gson gson = new Gson();
 
-        try {
+        Date currentLocalTime = new Date();
+        places = gson.fromJson(response.toString(),
+                new TypeToken<ArrayList<Place>>() {
+                }.getType());
+
+        /*try {*/
             //dataBase.addAll(response);
             getActivity().
-                    getContentResolver().bulkInsert(BULK_INSERT_URI, getValuesFromJArray(response));
-        } catch (JSONException e) {
+                    getContentResolver().bulkInsert(BULK_INSERT_URI, getValuesFromJArray(places));
+        /*} catch (JSONException e) {
             e.printStackTrace();
-        }
-        cursor=getActivity().getContentResolver().query(GET_ALL_URI,null,null,null,null);
+        }*/
+        cursor = getActivity().getContentResolver().query(GET_ALL_URI, null, null, null, null);
         //cursor = dataBase.getAll();
         long millis = new Date().getTime() - currentLocalTime.getTime();
         Log.e("CURRENT TIME", "duration secs: "
-              + ((double)millis/1000.0) + ", millis: " + millis);
+                + ((double) millis / 1000.0) + ", millis: " + millis);
         adapter.notifyDataSetChanged();
         adapter.updateList(cursor);
     }
 
-    public ContentValues[] getValuesFromJArray(JSONArray jsonArray) throws JSONException {
+
+    public ContentValues[] getValuesFromJArray(ArrayList<Place> places) {
         ArrayList<ContentValues> contentValues = new ArrayList<>();
-        for (int i = 0; i < jsonArray.length(); i++) {
-            ContentValues cv = new ContentValues();
-            JSONObject jsonObj = jsonArray.getJSONObject(i);
-            Iterator<String> keysIterator = jsonObj.keys();
-            while (keysIterator.hasNext())
-            {
-                String key = keysIterator.next();
-                String value = jsonObj.getString(key);
-                if (value == null) value = "";
-                /*if (i == 0)
-                    Logger.d("key: " + key + ", value: " + value);*/
-                if (key.equals("point") || key.equals("telefono")
-                        || key.equals("is_active")) continue;
-                cv.put(key, value);
-            }
-            contentValues.add(cv);
+        for (int i = 0; i < places.size(); i++) {
+            Place place = places.get(i);
+
+            ContentValues values = new ContentValues();
+
+                values.put(COLUMN_ID_MODEL, place.id);
+                values.put(COLUMN_LAT, place.lat);
+                values.put(COLUMN_LON, place.lon);
+                values.put(COLUMN_CIUDAD, place.ciudad);
+                values.put(COLUMN_CELULAR, place.celular);
+                values.put(COLUMN_PAIS, place.pais);
+                values.put(COLUMN_DIRECCION, place.direccion);
+                values.put(COLUMN_HORARIOS, place.horarios);
+                values.put(COLUMN_NAME, place.nombre);
+
+
+            contentValues.add(values);
 
             //db.insert(TABLE_NAME, null, cv);
         }
         return contentValues.toArray(new ContentValues[contentValues.size()]);
     }
+
+    public ContentValues[] getValuesFromJArray(JSONArray jsonArray) throws JSONException {
+        ArrayList<ContentValues> contentValues = new ArrayList<>();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject place = jsonArray.getJSONObject(i);
+
+            ContentValues values = new ContentValues();
+            try {
+                values.put(COLUMN_ID_MODEL, place.getInt("id"));
+                values.put(COLUMN_LAT, place.getDouble("lat"));
+                values.put(COLUMN_LON, place.getDouble("lon"));
+                values.put(COLUMN_CIUDAD, place.getString("ciudad"));
+                values.put(COLUMN_CELULAR, place.getInt("celular"));
+                values.put(COLUMN_PAIS, place.getString("pais"));
+                values.put(COLUMN_DIRECCION, place.getString("direccion"));
+                values.put(COLUMN_HORARIOS, place.getString("horarios"));
+                values.put(COLUMN_NAME, place.getString("nombre"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            contentValues.add(values);
+
+            //db.insert(TABLE_NAME, null, cv);
+        }
+        return contentValues.toArray(new ContentValues[contentValues.size()]);
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated

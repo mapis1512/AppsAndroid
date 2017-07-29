@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements PlaceFragment.OnL
         preferences = new MyPreferences(this);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new Logout());
-        restore();
+
         placeFragment = PlaceFragment.newInstance(1);
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -52,19 +52,6 @@ public class MainActivity extends AppCompatActivity implements PlaceFragment.OnL
         fragmentTransaction.commit();
 
     }
-
-    private void restore() {
-        Context context=null;
-        try{
-            context=createPackageContext("com.example.a71.cameraapplication",0);
-            SharedPreferences pref=context.getSharedPreferences("shared",context.CONTEXT_IGNORE_SECURITY);
-            String name=pref.getString("name","none");
-            Toast.makeText(this,name,Toast.LENGTH_SHORT);
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
 
     class Logout implements View.OnClickListener{
 

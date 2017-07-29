@@ -21,7 +21,7 @@ public class MyContentProvide extends ContentProvider{
 
     private SQLiteDatabase database;
 
-    public static final String AUTHORITY = "com.example.a68.httpapplication.MyContentProvider";
+    public static final String AUTHORITY = "com.example.a68.httpapplication.MyContentProvide";
 
     private static final UriMatcher sUriMatcher;
     private static final int DATUM = 1;

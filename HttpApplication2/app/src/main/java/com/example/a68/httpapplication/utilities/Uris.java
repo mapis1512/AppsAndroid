@@ -12,6 +12,6 @@ import static com.example.a68.httpapplication.databases.MyDataBase.TABLE_NAME;
 
 public class Uris {
     public static final Uri GET_ALL_URI=Uri.parse("content://"+ MyContentProvide.AUTHORITY+"/"+TABLE_NAME);
-    public static final Uri BULK_INSERT_URI=Uri.parse("content://"+ MyContentProvide.AUTHORITY+"/"+TABLE_NAME+"/bulk-insert/");
+    public static final Uri BULK_INSERT_URI=Uri.parse("content://"+ MyContentProvide.AUTHORITY+"/"+TABLE_NAME+"/bulk-insert");
 
 }
