@@ -1,7 +1,9 @@
 package com.example.a71.intentaplication;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,6 +18,7 @@ import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.a71.intentaplication.Models.Person;
 
@@ -47,7 +50,24 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
             }
         });
+        restoreData();
+        
+
     }
+
+    private void restoreData() {
+        Context context=null;
+        try{
+            context=createPackageContext("com.example.a71.cameraapplication",0);
+            SharedPreferences pref=context.getSharedPreferences("shared",context.CONTEXT_IGNORE_SECURITY);
+            String name=pref.getString("name","none");
+            Toast.makeText(this,name,Toast.LENGTH_SHORT).show();
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

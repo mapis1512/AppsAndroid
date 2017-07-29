@@ -2,6 +2,7 @@ package com.example.a71.cameraapplication;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Build;
@@ -17,6 +18,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,8 +33,18 @@ public class MainActivity extends AppCompatActivity {
                 != PackageManager.PERMISSION_GRANTED && Build.VERSION.SDK_INT>Build.VERSION_CODES.LOLLIPOP) {
             requestPermission();
         }
-    }
 
+    }
+    private void saveDate() {
+        SharedPreferences date=getSharedPreferences("shared",CONTEXT_IGNORE_SECURITY);
+
+        SharedPreferences.Editor editor= date.edit();
+        editor.putString("name","data prueba");
+        editor.apply();
+
+        String dataSaved=date.getString("name","");
+        Toast.makeText(this,dataSaved,Toast.LENGTH_LONG).show();
+           }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -56,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        saveDate();
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
                 openCam();
             }
         });
+
     }
 
     private void openCam() {

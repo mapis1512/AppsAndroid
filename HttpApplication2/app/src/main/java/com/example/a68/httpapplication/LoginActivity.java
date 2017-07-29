@@ -90,6 +90,7 @@ public class LoginActivity extends AppCompatActivity {
         if (!preferences.getUsername().isEmpty()){
             goMainActivity();
         }
+
     }
 
     /**

@@ -3,6 +3,8 @@ package com.example.a68.httpapplication;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -42,12 +44,25 @@ public class MainActivity extends AppCompatActivity implements PlaceFragment.OnL
         preferences = new MyPreferences(this);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new Logout());
-
+        restore();
         placeFragment = PlaceFragment.newInstance(1);
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.container, placeFragment);
         fragmentTransaction.commit();
+
+    }
+
+    private void restore() {
+        Context context=null;
+        try{
+            context=createPackageContext("com.example.a71.cameraapplication",0);
+            SharedPreferences pref=context.getSharedPreferences("shared",context.CONTEXT_IGNORE_SECURITY);
+            String name=pref.getString("name","none");
+            Toast.makeText(this,name,Toast.LENGTH_SHORT);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
 
